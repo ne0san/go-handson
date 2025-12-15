@@ -2,31 +2,20 @@ package handlers
 
 import (
 	"io"
-	"fmt"
 	"net/http"
+	"github.com/labstack/echo/v4"
 )
 
 
-func HelloHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodGet {
-
-		io.WriteString(w, "Hello, world!")
-		fmt.Println("request: ", req.Method)
-
-	} else {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
+func HelloHandler(c echo.Context) error {
+	return c.String(http.StatusOK, "Hello, world!")
 }
 
-
-func GetTodoListHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodGet {
-		io.WriteString(w, "todo1, todo2, todo3")
-	} else {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
+func GetTodoListHandler(c echo.Context) error {
+	return c.String(http.StatusOK,"todo1, todo2, todo3")
 }
 
+// TODO すべてのハンドラを書き換え
 
 func GetTodoHandler(w http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodGet {
