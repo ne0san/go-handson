@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"io"
 	"net/http"
 	"github.com/labstack/echo/v4"
 )
@@ -15,38 +14,18 @@ func GetTodoListHandler(c echo.Context) error {
 	return c.String(http.StatusOK,"todo1, todo2, todo3")
 }
 
-// TODO すべてのハンドラを書き換え
-
-func GetTodoHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodGet {
-		io.WriteString(w, "todo1")
-	} else {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
+func GetTodoHandler(c echo.Context) error {
+	return c.String(http.StatusOK, "todo1")
 }
 
-
-func PostTodoHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodPost {
-		io.WriteString(w, "Todo created!!")
-	} else {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
+func PostTodoHandler(c echo.Context) error {
+	return c.String(http.StatusOK, "Todo created!!")
 }
 
-
-func PutTodoHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodPut {
-		io.WriteString(w, "Todo 2 updated!!")
-	} else {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
+func PutTodoHandler(c echo.Context) error {
+	return c.String(http.StatusOK, "Todo 2 updated!!")
 }
 
-func DeleteTodoHandler(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodDelete {
-		io.WriteString(w, "Todo 3 deleted!!")
-	} else {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
+func DeleteTodoHandler(c echo.Context) error {
+	return c.String(http.StatusOK, "Todo 3 deleted!!")
 }
