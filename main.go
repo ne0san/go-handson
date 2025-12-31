@@ -8,12 +8,12 @@ import (
 func main() {
 	e := echo.New()
 
-	e.GET("/hello", handlers.HelloHandler)
+	e.GET("/hello/:id", handlers.HelloHandler)
 	e.GET("/todos/list", handlers.GetTodoListHandler)
-	e.GET("/todos/1", handlers.GetTodoHandler)
-	e.POST("/todo/", handlers.PostTodoHandler)
-	e.PUT("/todo/2", handlers.PutTodoHandler)
-	e.DELETE("/todo/3", handlers.DeleteTodoHandler)	
+	e.GET("/todos/:id", handlers.GetTodoHandler)
+	e.POST("/todos/", handlers.PostTodoHandler)
+	e.PUT("/todos/:id", handlers.PutTodoHandler)
+	e.DELETE("/todos/:id", handlers.DeleteTodoHandler)	
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
