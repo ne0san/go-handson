@@ -1,20 +1,22 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
 	handlers "go-handson/handlers"
+	"github.com/labstack/echo/v4"
 )
 
+
 func main() {
+	
+	// 文字列に変換して出力
 	e := echo.New()
 
 	e.GET("/hello/:id", handlers.HelloHandler)
 	e.GET("/todos/list", handlers.GetTodoListHandler)
 	e.GET("/todos/:id", handlers.GetTodoHandler)
-	e.POST("/todos/", handlers.PostTodoHandler)
+	e.POST("/todos", handlers.PostTodoHandler)
 	e.PUT("/todos/:id", handlers.PutTodoHandler)
-	e.DELETE("/todos/:id", handlers.DeleteTodoHandler)	
+	e.DELETE("/todos/:id", handlers.DeleteTodoHandler)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
-

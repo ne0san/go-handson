@@ -5,8 +5,22 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"time"
 )
 
+type GetTodo struct {
+	ID        int       `json:"id"`
+	Title     string    `json:"title"`
+	Content   string    `json:"content"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type CreateTodo struct {
+	ID      int    `json:"id"`
+	Title   string `json:"title"`
+	Content string `json:"content"`
+}
 
 func HelloHandler(c echo.Context) error {
 	idstr := c.Param("id")
@@ -22,16 +36,28 @@ func GetTodoListHandler(c echo.Context) error {
 }
 
 func GetTodoHandler(c echo.Context) error {
-	idstr := c.Param("id")
-	id, err := strconv.Atoi(idstr)
-	if err != nil {
-		return c.String(http.StatusBadRequest, "Invalid ID")
+	todo := GetTodo{
+		ID:        1,
+		Title:     "Sample Todo",
+		Content:   "This is a sample task",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
-	return c.String(http.StatusOK, "todo:" + strconv.Itoa(id))
+
+	// JSONレスポンスとして返す
+	return c.JSON(http.StatusOK, todo)
 }
 
 func PostTodoHandler(c echo.Context) error {
-	return c.String(http.StatusOK, "Todo created!!")
+	var todo CreateTodo
+
+	// JSONデータを構造体にバインド
+	if err := c.Bind(&todo); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid JSON format"})
+	}
+
+	// デコードされたデータをレスポンスとして返す
+	return c.JSON(http.StatusOK, todo)
 }
 
 func PutTodoHandler(c echo.Context) error {
