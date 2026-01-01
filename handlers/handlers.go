@@ -6,21 +6,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"time"
+	models "go-handson/models"
 )
-
-type GetTodo struct {
-	ID        int       `json:"id"`
-	Title     string    `json:"title"`
-	Content   string    `json:"content"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-}
-
-type CreateTodo struct {
-	ID      int    `json:"id"`
-	Title   string `json:"title"`
-	Content string `json:"content"`
-}
 
 func HelloHandler(c echo.Context) error {
 	idstr := c.Param("id")
@@ -36,7 +23,7 @@ func GetTodoListHandler(c echo.Context) error {
 }
 
 func GetTodoHandler(c echo.Context) error {
-	todo := GetTodo{
+	todo := models.Todo{
 		ID:        1,
 		Title:     "Sample Todo",
 		Content:   "This is a sample task",
@@ -48,8 +35,11 @@ func GetTodoHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, todo)
 }
 
+// リクエストをバインド
+// 失敗したら500
+// 成功したらTODOをjsonで
 func PostTodoHandler(c echo.Context) error {
-	var todo CreateTodo
+	var todo models.Todo
 
 	// JSONデータを構造体にバインド
 	if err := c.Bind(&todo); err != nil {
@@ -59,7 +49,7 @@ func PostTodoHandler(c echo.Context) error {
 	// デコードされたデータをレスポンスとして返す
 	return c.JSON(http.StatusOK, todo)
 }
-
+// 次これ
 func PutTodoHandler(c echo.Context) error {
 	idstr := c.Param("id")
 	id, err := strconv.Atoi(idstr)

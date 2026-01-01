@@ -8,7 +8,6 @@ import (
 
 func main() {
 	
-	// 文字列に変換して出力
 	e := echo.New()
 
 	e.GET("/hello/:id", handlers.HelloHandler)
