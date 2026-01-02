@@ -11,7 +11,7 @@ func main() {
 	e := echo.New()
 
 	e.GET("/hello/:id", handlers.HelloHandler)
-	e.GET("/todos/list", handlers.GetTodoListHandler)
+	e.GET("/todos", handlers.GetTodoListHandler)
 	e.GET("/todos/:id", handlers.GetTodoHandler)
 	e.POST("/todos", handlers.PostTodoHandler)
 	e.PUT("/todos/:id", handlers.PutTodoHandler)

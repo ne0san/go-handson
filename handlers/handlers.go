@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"time"
 	models "go-handson/models"
+	"fmt"
 )
 
 func HelloHandler(c echo.Context) error {
@@ -18,11 +19,18 @@ func HelloHandler(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, ID:" + strconv.Itoa(id) + "!")
 }
 
+
 func GetTodoListHandler(c echo.Context) error {
-	return c.String(http.StatusOK,"todo1, todo2, todo3")
+	return c.JSON(http.StatusOK, models.Todos)
 }
 
 func GetTodoHandler(c echo.Context) error {
+	idstr := c.Param("id")
+	id, err := strconv.Atoi(idstr)
+	if err != nil {
+		return c.String(http.StatusBadRequest, "Invalid ID")
+	}
+	fmt.Println("get id: ", id)
 	todo := models.Todo{
 		ID:        1,
 		Title:     "Sample Todo",
@@ -49,14 +57,25 @@ func PostTodoHandler(c echo.Context) error {
 	// デコードされたデータをレスポンスとして返す
 	return c.JSON(http.StatusOK, todo)
 }
-// 次これ
+
+// リクエストから更新対象IDを取得
+// ボディからtodoをバインド
+// バインドしたデータにURLパラメータから取得したIDを設定
 func PutTodoHandler(c echo.Context) error {
 	idstr := c.Param("id")
 	id, err := strconv.Atoi(idstr)
 	if err != nil {
 		return c.String(http.StatusBadRequest, "Invalid ID")
 	}
-	return c.String(http.StatusOK, "Todo " + strconv.Itoa(id) + " updated!!")
+	
+	var todo models.Todo
+	// JSONデータを構造体にバインド
+	if err := c.Bind(&todo); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid JSON format"})
+	}
+	todo.ID = id
+	// デコードされたデータをレスポンスとして返す
+	return c.JSON(http.StatusOK, todo)
 }
 
 func DeleteTodoHandler(c echo.Context) error {
@@ -65,5 +84,5 @@ func DeleteTodoHandler(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusBadRequest, "Invalid ID")
 	}
-	return c.String(http.StatusOK, "Todo " + strconv.Itoa(id) + " deleted!!")
+	return c.JSON(http.StatusOK, "Todo " + strconv.Itoa(id) + " deleted!!")
 }
